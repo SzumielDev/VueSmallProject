@@ -4,7 +4,7 @@
 <template>
     <div>
         <header>
-            <h1>Contact</h1>
+            <h1>Register</h1>
         </header>
     </div>
 </template>

@@ -1,0 +1,66 @@
+/* General */
+
+body {
+    background-color: white;
+    color: black;
+}
+
+body p {
+    color: black;
+}
+
+body .custom-column {
+    border: 1px solid #e5e5e5;
+}
+
+body.dark-theme {
+    background-color: #17181a;
+    color: rgb(238, 238, 238);
+}
+
+body.dark-theme p {
+    color: rgb(216, 216, 216);
+}
+
+body.dark-theme .custom-column {
+    border: 1px solid #2c2d2f;
+}
+
+/* Others */
+
+.pointer {
+    cursor: pointer;
+}
+
+.center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+}
+
+.decoration-none {
+    text-decoration: none;
+}
+
+/* Fonts */
+
+.kanit {
+    font-family: 'Kanit', sans-serif;
+}
+
+.roboto {
+    font-family: 'Roboto', sans-serif;
+}
+
+.small {
+    font-size: 10px;
+}
+
+.medium {
+    font-size:12px;
+}
+
+.big {
+    font-size: 20px;
+}

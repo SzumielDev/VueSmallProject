@@ -1,8 +1,20 @@
 <script setup lang="ts">
-import { ref, watch } from 'vue';
-import { NSelect, NSpace } from 'naive-ui';
-import HeaderDisplay from './constantComponents/HeaderDisplay.vue';
-import HomeAnnouncementPattern from './HomeComponents/HomeListingTemplate.vue';
+import { ref } from "vue";
+import ImageSlider from "./ObjectDetailsComponents/ImageSlider.vue";
+import Details from "./ObjectDetailsComponents/Details.vue";
+import Descriptions from "./ObjectDetailsComponents/Descriptions.vue";
+import Map from "./ObjectDetailsComponents/Map.vue";
+import SellerInformation from "./ObjectDetailsComponents/SellerInformation.vue";
+import TopHeaderDetails from "./ObjectDetailsComponents/TopHeaderDetails.vue";
+import SimilarAdsPattern from "./ObjectDetailsComponents/SimilarAdsPattern.vue";
+import { NAlert } from "naive-ui";
+
+const props = defineProps(["id"]);
+
+const isAlertActive = ref(false);
+const activeNumber = () => {
+    isAlertActive.value = true;
+}
 
 const jsonFromApi = [
     {
@@ -607,99 +619,93 @@ const jsonFromApi = [
     }
 ];
 const data = JSON.parse(JSON.stringify(jsonFromApi));
+const currentItem = data.find((object: any) => object.id == props.id);
 
-const sortingKey = ref(null);
-const dataApiArray = ref(data);
+const veryfiedColor = currentItem.veryfied === "Veryfied" ? "text-success" : "text-danger";
 
-const sortData = (arrayToSort) => {
-    const [key, direction] = sortingKey.value?.split("-") || [null, null];
-    arrayToSort.value = arrayToSort.value.sort((a, b) => {
-        if (direction === "Asc") {
-            return a[key] - b[key];
+const similarAds = ref([]);
+const findSimilarAds = () => {
+    for (let i = 0; i < 6;) {
+        const drawNumber = Math.floor(Math.random() * data.length);
+        const drawItem = data[drawNumber];
+        if (similarAds.value.includes(drawItem) === false) {
+            similarAds.value.push(drawItem);
+            i++;
         }
-        if (direction === "Desc") {
-            return b[key] - a[key];
-        }
-        return 0;
-    })
+    }
 }
 
-watch(sortingKey, () => {
-    sortData(dataApiArray);
-});
-
-const options = [
-    {
-        label: "None",
-        value: null,
-        disabled: false
-    },
-    {
-        label: "Price: Low to High",
-        value: "price-Asc"
-    },
-    {
-        label: "Price: High to Low",
-        value: "price-Desc"
-    },
-    {
-        label: "Year: Low to High",
-        value: "year-Asc"
-    },
-    {
-        label: "Year: High to Low",
-        value: "year-Desc"
-    }
-];
-
-const customSelect = { '--bg-color': 'black' }
+findSimilarAds();
 
 </script>
 <template>
-    <div>
-        <HeaderDisplay />
-        <div class="container-xxl bg-custom">
-            <div class="row">
-                <div class="col">
-                    <n-space vertical>
-                        <n-select class="select-custom" v-model:value="sortingKey" :options="options"
-                            placeholder="Sort by:" />
-                    </n-space>
+    <div class="center">
+        <div class="alert-custom">
+            <n-alert v-show="isAlertActive" title="Quick info" type="info" closable>
+                This click can be saved to database!
+            </n-alert>
+        </div>
+    </div>
+    <div class="container-xxl extra-padding">
+        <div class="row pt-2">
+            <div class="col-12">
+                <p class="small text-primary"><router-link to="/home">Home</router-link> / Offer id: {{ props.id }}</p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-9">
+                <ImageSlider :image="currentItem.image" :images="currentItem.images" :id="props.id" />
+                <Details :company="currentItem.company" :model="currentItem.model" :year="currentItem.year"
+                    :mileage="currentItem.mileage" :fuel="currentItem.fuel" :power="currentItem.power"
+                    :engine="currentItem.engine" :doors="currentItem.doors" :seats="currentItem.seats"
+                    :color="currentItem.color" :country="currentItem.country" :registered="currentItem.registered"
+                    :vin="currentItem.vin" />
+                <Descriptions :sellerInfo="currentItem.sellerInfo" :description="currentItem.dedication" />
+                <Map :city="currentItem.city" />
+                <SellerInformation :accountName="currentItem.accountName" :number="currentItem.number"
+                    :veryfiedColor="veryfiedColor" :veryfied="currentItem.veryfied" />
+            </div>
+            <div class="col-3">
+                <TopHeaderDetails :company="currentItem.company" :model="currentItem.model" :price="currentItem.price"
+                    :accountName="currentItem.accountName" :number="currentItem.number" :veryfied="currentItem.veryfied"
+                    :city="currentItem.city" :date="currentItem.date" :id="props.id" :veryfiedColor="veryfiedColor"
+                    :handleButtonClick="activeNumber" />
+                <div class="row">
+                    <div class="col-12">
+                        <p class="kanit h6 pt-3 text-center"><b>You may also be interested</b></p>
+                    </div>
+                </div>
+                <div class="row row-custom">
+                    <SimilarAdsPattern v-for="car in similarAds" :col="'col-12'" :company="car.company" :model="car.model"
+                        :year="car.year" :price="car.price" :image="car.image" :id="props.id" :mileage="car.mileage" />
                 </div>
             </div>
         </div>
-        <div class="container-xxl bg-custom pt-1">
-            <TransitionGroup name="list" tag="div" class="row">
-                <HomeAnnouncementPattern :key="car.id" :columns="'col-12'" :currentItem="car" v-for="car in dataApiArray" />
-            </TransitionGroup>
+        <div class="row pt-5">
+            <div class="col-12">
+                <p class="kanit h5 pt-3"><b>Similar ads</b></p>
+            </div>
+            <SimilarAdsPattern v-for="car in similarAds" :col="'col-2'" :company="car.company" :model="car.model"
+                :year="car.year" :price="car.price" :image="car.image" :id="props.id" :mileage="car.mileage" />
         </div>
     </div>
 </template>
 
 <style scoped>
-.bg-custom {
-    padding-left: 200px;
-    padding-right: 200px;
-}
-
-.select-custom {
-    width: 200px;
-    float: right;
-}
-
-.list-move,
-.list-enter-active,
-.list-leave-active {
-    transition: all 0.5s ease;
-}
-
-.list-enter-from,
-.list-leave-to {
-    opacity: 0;
-    transform: translateX(30px);
-}
-
-.list-leave-active {
+.alert-custom {
     position: absolute;
+    top: 30px;
+    width: 600px;
+    z-index: 100;
+}
+
+.extra-padding {
+    padding-right: 150px;
+    padding-left: 150px;
+}
+
+.row-custom {
+    padding-right: 20px;
+    padding-left: 20px;
 }
 </style>
