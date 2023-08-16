@@ -34,10 +34,10 @@ const switchStyle = ({ checked }: { checked: boolean }): CSSProperties => {
 <template>
   <ul class="nav justify-content-center bg-dark">
     <nav class="navMenu monsterrat pt-3 pb-2">
-      <a href="nav-link"><router-link to="/">CLASSIC</router-link></a>
-      <a href="nav-link"><router-link to="/new">FUTURE</router-link></a>
-      <a href="nav-link"><router-link to="/contact">CONTACT</router-link></a>
-      <a href="nav-link"><router-link to="/register">SIGN UP</router-link></a>
+      <router-link to="/">CLASSIC</router-link>
+      <router-link to="/new">FUTURE</router-link>
+      <router-link to="/contact">CONTACT</router-link>
+      <router-link to="/register">SIGN UP</router-link>
       <div class="dot"></div>
     </nav>
     <n-space>
@@ -62,19 +62,6 @@ const switchStyle = ({ checked }: { checked: boolean }): CSSProperties => {
   position: absolute;
   right: 20px;
   text-decoration: none;
-}
-
-.monsterrat {
-  font-family: "Montserrat", sans-serif;
-}
-
-.nav-item a {
-  color: aliceblue;
-  text-decoration: none;
-}
-
-.nav-item a:hover {
-  color: rgb(182, 182, 182);
 }
 
 .navMenu a {

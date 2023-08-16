@@ -639,54 +639,57 @@ findSimilarAds();
 
 </script>
 <template>
-    <div class="center">
-        <div class="alert-custom">
-            <n-alert v-show="isAlertActive" title="Quick info" type="info" closable>
-                This click can be saved to database!
-            </n-alert>
-        </div>
-    </div>
-    <div class="container-xxl extra-padding">
-        <div class="row pt-2">
-            <div class="col-12">
-                <p class="small text-primary"><router-link to="/home">Home</router-link> / Offer id: {{ props.id }}</p>
+    <div>
+        <div class="center">
+            <div class="alert-custom">
+                <n-alert v-show="isAlertActive" title="Quick info" type="info" closable>
+                    This click can be saved to database!
+                </n-alert>
             </div>
         </div>
-        <div class="row">
-            <div class="col-9">
-                <ImageSlider :image="currentItem.image" :images="currentItem.images" :id="props.id" />
-                <Details :company="currentItem.company" :model="currentItem.model" :year="currentItem.year"
-                    :mileage="currentItem.mileage" :fuel="currentItem.fuel" :power="currentItem.power"
-                    :engine="currentItem.engine" :doors="currentItem.doors" :seats="currentItem.seats"
-                    :color="currentItem.color" :country="currentItem.country" :registered="currentItem.registered"
-                    :vin="currentItem.vin" />
-                <Descriptions :sellerInfo="currentItem.sellerInfo" :description="currentItem.dedication" />
-                <Map :city="currentItem.city" />
-                <SellerInformation :accountName="currentItem.accountName" :number="currentItem.number"
-                    :veryfiedColor="veryfiedColor" :veryfied="currentItem.veryfied" />
+        <div class="container-xxl extra-padding">
+            <div class="row pt-2">
+                <div class="col-12">
+                    <p class="small text-primary"><router-link to="/home">Home</router-link> / Offer id: {{ props.id }}</p>
+                </div>
             </div>
-            <div class="col-3">
-                <TopHeaderDetails :company="currentItem.company" :model="currentItem.model" :price="currentItem.price"
-                    :accountName="currentItem.accountName" :number="currentItem.number" :veryfied="currentItem.veryfied"
-                    :city="currentItem.city" :date="currentItem.date" :id="props.id" :veryfiedColor="veryfiedColor"
-                    :handleButtonClick="activeNumber" />
-                <div class="row">
-                    <div class="col-12">
-                        <p class="kanit h6 pt-3 text-center"><b>You may also be interested</b></p>
+            <div class="row">
+                <div class="col-9">
+                    <ImageSlider :image="currentItem.image" :images="currentItem.images" :id="props.id" />
+                    <Details :company="currentItem.company" :model="currentItem.model" :year="currentItem.year"
+                        :mileage="currentItem.mileage" :fuel="currentItem.fuel" :power="currentItem.power"
+                        :engine="currentItem.engine" :doors="currentItem.doors" :seats="currentItem.seats"
+                        :color="currentItem.color" :country="currentItem.country" :registered="currentItem.registered"
+                        :vin="currentItem.vin" />
+                    <Descriptions :sellerInfo="currentItem.sellerInfo" :description="currentItem.dedication" />
+                    <Map :city="currentItem.city" />
+                    <SellerInformation :accountName="currentItem.accountName" :number="currentItem.number"
+                        :veryfiedColor="veryfiedColor" :veryfied="currentItem.veryfied" />
+                </div>
+                <div class="col-3">
+                    <TopHeaderDetails :company="currentItem.company" :model="currentItem.model" :price="currentItem.price"
+                        :accountName="currentItem.accountName" :number="currentItem.number" :veryfied="currentItem.veryfied"
+                        :city="currentItem.city" :date="currentItem.date" :id="props.id" :veryfiedColor="veryfiedColor"
+                        :handleButtonClick="activeNumber" />
+                    <div class="row">
+                        <div class="col-12">
+                            <p class="kanit h6 pt-3 text-center"><b>You may also be interested</b></p>
+                        </div>
+                    </div>
+                    <div class="row row-custom">
+                        <SimilarAdsPattern v-for="car in similarAds" :col="'col-12'" :company="car.company"
+                            :model="car.model" :year="car.year" :price="car.price" :image="car.image" :id="props.id"
+                            :mileage="car.mileage" />
                     </div>
                 </div>
-                <div class="row row-custom">
-                    <SimilarAdsPattern v-for="car in similarAds" :col="'col-12'" :company="car.company" :model="car.model"
-                        :year="car.year" :price="car.price" :image="car.image" :id="props.id" :mileage="car.mileage" />
+            </div>
+            <div class="row pt-5">
+                <div class="col-12">
+                    <p class="kanit h5 pt-3"><b>Similar ads</b></p>
                 </div>
+                <SimilarAdsPattern v-for="car in similarAds" :col="'col-2'" :company="car.company" :model="car.model"
+                    :year="car.year" :price="car.price" :image="car.image" :id="props.id" :mileage="car.mileage" />
             </div>
-        </div>
-        <div class="row pt-5">
-            <div class="col-12">
-                <p class="kanit h5 pt-3"><b>Similar ads</b></p>
-            </div>
-            <SimilarAdsPattern v-for="car in similarAds" :col="'col-2'" :company="car.company" :model="car.model"
-                :year="car.year" :price="car.price" :image="car.image" :id="props.id" :mileage="car.mileage" />
         </div>
     </div>
 </template>
