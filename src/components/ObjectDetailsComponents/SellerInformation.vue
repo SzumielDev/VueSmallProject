@@ -1,20 +1,14 @@
 <script setup lang="ts">
-import { NButton } from "naive-ui";
-import { ref } from "vue";
+import { NButton, NDropdown } from "naive-ui";
 
-const props = defineProps(["accountName", "number", "veryfied", "veryfiedColor"]);
+const props = defineProps(["accountName", "number", "veryfied", "veryfiedColor", "handleButtonClick"]);
 
+const parseNumber = parseInt(props.number);
+const formattedNumber = parseNumber.toLocaleString("pl-PL");
 
-const isShowNumberButtonActive = ref(true);
-const isNumberButtonActive = ref(false);
-const isAlertActive = ref(false);
-const activeNumber = () => {
-    isShowNumberButtonActive.value = false;
-    setTimeout(() => {
-        isNumberButtonActive.value = true;
-    }, 300);
-    isAlertActive.value = true;
-}
+const dropdownInfo = [
+    { label: formattedNumber, key: "1" },
+];
 
 </script>
 <template>
@@ -33,17 +27,11 @@ const activeNumber = () => {
                     <n-button class="w-100 mb-2" color="#DC143C">
                         Send message to seller
                     </n-button>
-                    <transition name="slide-fade">
-                        <n-button v-if="isShowNumberButtonActive === true" @click="activeNumber" ghost class="w-100 mb-2"
-                            color="#1E90FF">
+                    <n-dropdown trigger="click" :options="dropdownInfo" size="large" :animated="true">
+                        <n-button @click="handleButtonClick" ghost class="w-100 mb-2" color="#1E90FF">
                             Show me phone number
                         </n-button>
-                    </transition>
-                    <transition name="slide-fade">
-                        <n-button v-if="isNumberButtonActive === true" ghost class="w-100 mb-2" color="#228B22">
-                            {{ props.number }}
-                        </n-button>
-                    </transition>
+                    </n-dropdown>
                 </div>
             </div>
         </div>

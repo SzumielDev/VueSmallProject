@@ -677,10 +677,6 @@ const customSelect = { '--bg-color': 'black' }
 </template>
 
 <style scoped>
-.bg-custom {
-    padding-left: 200px;
-    padding-right: 200px;
-}
 
 .select-custom {
     width: 200px;

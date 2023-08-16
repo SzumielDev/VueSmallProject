@@ -351,7 +351,7 @@ const sortData = (arrayToSort) => {
 watch(sortingKey, () => {
     sortData(sortedDataByTopThree);
     sortData(sliceRestOfData);
-});
+}, { immediate: true });
 
 const options = [
     {

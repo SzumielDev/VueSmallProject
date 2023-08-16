@@ -27,7 +27,7 @@ const dropdownInfo = [
             <n-button class="w-100 mb-2" color="#DC143C">
                 Send message to seller
             </n-button>
-            <n-dropdown trigger="click" :options="dropdownInfo">
+            <n-dropdown trigger="click" :options="dropdownInfo" size="large" :animated="true" >
                 <n-button @click="handleButtonClick" ghost class="w-100 mb-2" color="#1E90FF">
                     Show me phone number
                 </n-button>
@@ -49,4 +49,8 @@ const dropdownInfo = [
     </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.custom-dropdown {
+    background-color: black!important;
+}
+</style>

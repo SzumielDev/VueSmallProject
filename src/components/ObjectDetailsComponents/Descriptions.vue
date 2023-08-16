@@ -24,10 +24,4 @@ const props = defineProps(["sellerInfo", "description"]);
                         <p class="medium">{{ props.sellerInfo }}</p>
                     </div>
                 </div>
-                <!-- <div class="row">
-                    <div class="col-12">
-                        <p class="kanit h5 pt-3"><b>About</b></p>
-                        <p class="small">{{ props.description }}</p>
-                    </div>
-                </div> -->
 </template>

@@ -26,6 +26,11 @@ body.dark-theme .custom-column {
     border: 1px solid #2c2d2f;
 }
 
+.bg-custom {
+    padding-left: 200px;
+    padding-right: 200px;
+}
+
 /* Others */
 
 .pointer {
