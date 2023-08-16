@@ -619,7 +619,7 @@ const jsonFromApi = [
     }
 ];
 const data = JSON.parse(JSON.stringify(jsonFromApi));
-const currentItem = data.find((object: any) => object.id == props.id);
+const currentItem = ref(data.find((object: any) => object.id == props.id));
 
 const veryfiedColor = currentItem.veryfied === "Veryfied" ? "text-success" : "text-danger";
 
@@ -678,7 +678,7 @@ findSimilarAds();
                     </div>
                     <div class="row row-custom">
                         <SimilarAdsPattern v-for="car in similarAds" :col="'col-12'" :company="car.company"
-                            :model="car.model" :year="car.year" :price="car.price" :image="car.image" :id="props.id"
+                            :model="car.model" :year="car.year" :price="car.price" :image="car.image" :id="car.id"
                             :mileage="car.mileage" />
                     </div>
                 </div>
@@ -688,7 +688,7 @@ findSimilarAds();
                     <p class="kanit h5 pt-3"><b>Similar ads</b></p>
                 </div>
                 <SimilarAdsPattern v-for="car in similarAds" :col="'col-2'" :company="car.company" :model="car.model"
-                    :year="car.year" :price="car.price" :image="car.image" :id="props.id" :mileage="car.mileage" />
+                    :year="car.year" :price="car.price" :image="car.image" :id="car.id" :mileage="car.mileage" />
             </div>
         </div>
     </div>
