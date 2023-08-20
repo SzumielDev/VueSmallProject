@@ -10,7 +10,6 @@ import { NGradientText } from 'naive-ui';
                     <n-gradient-text gradient="linear-gradient(90deg, red 0%, green 50%, blue 100%)">
                         Check ouy my linkedin profile 
                     </n-gradient-text>
-                    
                 </div>
                 <div class="col-12 text-center pb-5 pt-2">
                     <a class="text-decoration-none" href="https://www.linkedin.com/in/marcin-szumiel/">LinkendIn</a>
