@@ -1,27 +1,54 @@
 <script setup lang="ts">
 import axios from 'axios';
-import { NButton, NSelect, NForm, NFormItem, NInput, useMessage, FormItemRule } from 'naive-ui';
+import {
+    NButton, NSelect, NForm, NFormItem, NInput, useMessage,
+    type FormItemRule, type FormInst, type FormItemInst, type FormValidationError, NCheckbox
+} from 'naive-ui';
 import { ref } from 'vue';
 
+interface ModelType {
+    name: string | null,
+    email: string | null,
+    number: number | null,
+    password: string | null,
+    reenteredPassword: string | null,
+    sellerType: string | null,
+    terms: boolean,
+}
+
 const message = useMessage();
+const formRef = ref<FormInst | null>(null);
+const rPasswordFormItemRef = ref<FormItemInst | null>(null);
 
 const options = ref([
     { label: 'Private seller', value: '0' },
     { label: 'Company', value: '1' },
 ]);
 
-const formValue = ref({
+const formValue = ref<ModelType>({
     name: null,
     email: null,
     number: null,
     password: null,
-    confirmPassword: null,
+    reenteredPassword: null,
     sellerType: null,
+    terms: false,
 });
 
 const rules = ref({
     name: [
-        { required: true, message: 'Please input name' },
+        { 
+            required: true, 
+            validator: (rule: FormItemRule, value: string) => {
+                if (!value) {
+                    return new Error('Please input name');
+                }
+                if (value.length < 3 || value.length > 20 || !/^[a-zA-Z0-9]+$/.test(value)) {
+                    return new Error('Name must be at least 3 characters and at most 20 characters long and can only contain letters and numbers');
+                }
+                return true;
+            },
+            message: 'Please input name' },
     ],
     email: [
         { required: true, message: 'Please input email' },
@@ -29,7 +56,7 @@ const rules = ref({
     number: [
         {
             required: true,
-            validator: (rule: FormItemRule, value: string) => {
+            validator: (rule: FormItemRule, value: number) => {
                 if (!value) {
                     return new Error('Number is required');
                 } else if (!/^\d*$/.test(value)) {
@@ -39,34 +66,65 @@ const rules = ref({
                 }
                 return true;
             },
-            message: 'Please input number'
+            message: 'Please input number',
+            trigger: ['input'],
         },
     ],
     password: [
         { required: true, message: 'Please input password' },
     ],
-    confirmPassword: [
+    reenteredPassword: [
         {
             required: true,
-            valdiator: (rule, value) => {
-                if (!value) {
-                    return new Error('Password confirmation is required');
-                } else if (value !== formValue.value.password) {
-                    return new Error('Password confirmation must match password');
-                }
-                return true;
-            },
-            message: 'Please input password'
+            message: 'Please re-enter your password',
+            trigger: ['input', 'blur']
         },
+        {
+            validator: (rule: FormItemRule, value: string): boolean => {
+                return !!formValue.value.password && formValue.value.password.startsWith(value);
+            },
+            message: 'Password is not the same as re-entered password',
+            trigger: 'input'
+        },
+        {
+            validator: (rule: FormItemRule, value: string): boolean => {
+                return value === formValue.value.password;
+            },
+            message: 'Password is not the same as re-entered password',
+            trigger: ['blur', 'password-input']
+        }
     ],
     sellerType: [
         { required: true, message: 'Please select seller type' },
     ],
+    terms: [
+        { 
+            required: true, 
+            validator: (_rule: FormItemRule, value: boolean) => {
+                if (value === false) {
+                    return new Error('Please accept terms and conditions');
+                }
+                return true;
+            },
+            message: 'Please accept terms and conditions' },
+    ],
 });
 
+
+const handlePasswordInput = () => {
+    if (formValue.value.reenteredPassword) {
+        rPasswordFormItemRef.value?.validate({ trigger: 'password-input' });
+    }
+}
+
 const handleValidateClick = (e: MouseEvent) => {
+    console.log(formValue.value.terms)
     e.preventDefault();
-    registerUser();
+    formRef.value?.validate((errors: Array<FormValidationError> | undefined) => {
+        if (!errors) {
+            registerUser();
+        }
+    });
 }
 
 const registerUser = () => {
@@ -95,65 +153,87 @@ const registerUser = () => {
         <div class="container register-custom">
 
             <div class="row register-row mt-5 mb-5">
-                <div class="col-12">
-                    <div class="row custom-register-bg-top">
+                <div class="col-2">
+                    <div class="row custom-register-bg-top" :style="{borderRadius: '5px 0 0 0'}">
+
+                        <div class="col-12">
+                            <p class="text-center inverted-color mb-3 mt-3"><b>Login in!</b></p>
+                        </div>
+                    </div>   
+                </div>
+                <div class="col-10">
+                    <div class="row custom-register-bg-top" :style="{borderRadius: '0 5px 0 0'}">
                         <div class="col-12">
                             <p class="text-center inverted-color mb-3 mt-3"><b>REGISTER NEW ACCOUNT</b></p>
                         </div>
                     </div>
-                    <n-form ref="formref" size="medium" :rules="rules" :model="formValue">
+                    <n-form ref="formRef" size="medium" :rules="rules" :model="formValue">
                         <div class="row pt-4">
                             <div class="col-3">
-                                <p>Name</p>
+                                <p>Name <span class="text-danger">*</span></p>
                             </div>
                             <div class="col-9">
-                                <n-form-item class="disable-space">
-                                    <n-input v-model:value="formValue.name" placeholder="Imię i nazwisko" name="name"
-                                        required />
+                                <n-form-item class="disable-space" path="name">
+                                    <n-input v-model:value="formValue.name" placeholder="Name" name="name" required />
                                 </n-form-item>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-3">
-                                <p>Email</p>
+                                <p>Email <span class="text-danger">*</span></p>
                             </div>
                             <div class="col-9">
-                                <n-form-item class="disable-space">
+                                <n-form-item class="disable-space" path="email">
                                     <n-input v-model:value="formValue.email" placeholder="Email" name="email" required />
                                 </n-form-item>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-3">
-                                <p>Phone</p>
+                                <p>Phone <span class="text-danger">*</span></p>
                             </div>
                             <div class="col-9">
-                                <n-form-item class="disable-space">
-                                    <n-input v-model:value="formValue.number" placeholder="Numer telefonu" name="phone" />
+                                <n-form-item class="disable-space" path="number">
+                                    <n-input v-model:value="formValue.number" placeholder="Phone number" name="phone" />
                                 </n-form-item>
                             </div>
                         </div>
                         <div class="row">
                             <div class="col-3">
-                                <p>Password</p>
+                                <p>Password <span class="text-danger">*</span></p>
                             </div>
                             <div class="col">
-                                <n-form-item class="disable-space">
-                                    <n-input v-model:value="formValue.password" placeholder="Hasło" name="password"
-                                        required />
+                                <n-form-item class="disable-space" path="password">
+                                    <n-input v-model:value="formValue.password" type="password" placeholder="Password"
+                                        name="password" required @input="handlePasswordInput" @keydown.enter.prevent />
                                 </n-form-item>
                             </div>
                             <div class="col">
-                                <n-form-item class="disable-space">
-                                    <n-input v-model:value="formValue.confirmPassword" placeholder="Potwierdź hasło"
-                                        name="confirm_password" required />
+                                <n-form-item ref="rPasswordFormItemRef" first class="disable-space"
+                                    path="reenteredPassword">
+                                    <n-input v-model:value="formValue.reenteredPassword" :disabled="!formValue.password"
+                                        type="password" placeholder="Confirm password" name="confirm_password"
+                                        @keydown.enter.prevent required />
                                 </n-form-item>
                             </div>
                         </div>
                         <div class="row small-row pt-4">
                             <div class="col-12">
-                                <p class="text-center medium kanit">Are you a private seller or a company?</p>
-                                <n-select v-model:value="formValue.sellerType" :options="options" />
+                                <p class="text-center medium kanit">Are you a private seller or a company? <span
+                                        class="text-danger">*</span></p>
+                                <n-form-item class="disable-space" path="sellerType">
+                                    <n-select v-model:value="formValue.sellerType" :options="options" />
+                                </n-form-item>
+                            </div>
+                        </div>
+                        <div class="row pt-2">
+                            <div class="col-12">
+                                <n-form-item class="disable-space" path="terms">
+                                    <n-checkbox v-model:checked="formValue.terms" name="terms" required>
+                                        <p>I agree to the <a href="#">terms and conditions</a> <span
+                                                class="text-danger">*</span></p>
+                                    </n-checkbox>
+                                </n-form-item>
                             </div>
                         </div>
                         <div class="row text-center pt-4 pb-4">
@@ -182,4 +262,17 @@ const registerUser = () => {
 
 .disable-space {
     grid-template-rows: auto;
-}</style>
+}
+
+@media (max-width: 1399px) {
+    .register-custom {
+        padding-left: 200px;
+        padding-right: 200px;
+    }
+
+    .small-row {
+        padding-right: 0px;
+        padding-left: 0px;
+    }
+}
+</style>
