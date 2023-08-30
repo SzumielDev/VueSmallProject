@@ -1,17 +1,20 @@
 <script setup lang="ts">
+import { NMessageProvider } from 'naive-ui';
 import Menu from './components/constantComponents/Menu.vue';
 import './assets/css/general.css';
 import Footer from './components/constantComponents/Footer.vue';
 
 </script>
 <template>
-  <Menu />
+  <n-message-provider>
+    <Menu />
     <RouterView v-slot="{ Component }">
       <transition name="slide" mode="out-in">
         <component :is="Component" />
       </transition>
     </RouterView>
-  <Footer />
+    <Footer />
+  </n-message-provider>
 </template>
 
 <style scoped>

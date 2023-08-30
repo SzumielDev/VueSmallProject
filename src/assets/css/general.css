@@ -1,8 +1,22 @@
-/* General */
+/* General & darkTheme*/
 
 body {
     background-color: white;
     color: black;
+}
+
+body input {
+    background-color: #ffffff;
+    border: 1px solid rgba(0, 0, 0, 0.082);
+    border-radius: 5px;
+    width:100%;
+    font-size: 12px;
+    padding: 5px 10px 5px 10px;
+}
+
+body input:focus {
+    outline: none;
+    border: 1px solid #007bffc7;
 }
 
 body p {
@@ -13,6 +27,27 @@ body .custom-column {
     border: 1px solid #e5e5e5;
 }
 
+body .custom-register-bg-top {
+    background-color:rgb(15, 14, 14);
+    border-radius: 5px 5px 0 0;
+}
+
+body .register-row {
+    border-radius: 5px;
+    background-color: rgb(241, 241, 241);
+} 
+
+.bg-custom {
+    padding-left: 200px;
+    padding-right: 200px;
+}
+
+body .inverted-color {
+    color: white;
+}
+
+/* Dark Theme */
+
 body.dark-theme {
     background-color: #17181a;
     color: rgb(238, 238, 238);
@@ -22,14 +57,18 @@ body.dark-theme p {
     color: rgb(216, 216, 216);
 }
 
+body.dark-theme input {
+    background-color: rgb(26, 26, 26);
+}
+
 body.dark-theme .custom-column {
     border: 1px solid #2c2d2f;
 }
 
-.bg-custom {
-    padding-left: 200px;
-    padding-right: 200px;
-}
+body.dark-theme .register-row {
+    border-radius: 5px;
+    background-color: rgb(31, 32, 32);
+} 
 
 /* Others */
 
