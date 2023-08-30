@@ -28,11 +28,10 @@ body .custom-column {
 }
 
 body .custom-register-bg-top {
-    background-color:rgb(15, 14, 14);
+    background-color:rgb(31, 32, 34);
 }
 
 body .register-row {
-    border-radius: 5px;
     background-color: rgb(241, 241, 241);
 } 
 
@@ -65,9 +64,12 @@ body.dark-theme .custom-column {
 }
 
 body.dark-theme .register-row {
-    border-radius: 5px;
     background-color: rgb(31, 32, 32);
 } 
+
+body.dark-theme .custom-register-bg-top {
+    background-color:rgb(18, 20, 20);
+}
 
 /* Others */
 
@@ -83,7 +85,7 @@ body.dark-theme .register-row {
 }
 
 .decoration-none {
-    text-decoration: none;
+    text-decoration: none; 
 }
 
 /* Fonts */
@@ -110,4 +112,8 @@ body.dark-theme .register-row {
 
 .big {
     font-size: 20px;
+}
+
+.extra-big {
+    font-size: 30px;
 }

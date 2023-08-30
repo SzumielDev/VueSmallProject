@@ -37,8 +37,8 @@ const formValue = ref<ModelType>({
 
 const rules = ref({
     name: [
-        { 
-            required: true, 
+        {
+            required: true,
             validator: (rule: FormItemRule, value: string) => {
                 if (!value) {
                     return new Error('Please input name');
@@ -48,7 +48,8 @@ const rules = ref({
                 }
                 return true;
             },
-            message: 'Please input name' },
+            message: 'Please input name'
+        },
     ],
     email: [
         { required: true, message: 'Please input email' },
@@ -98,15 +99,16 @@ const rules = ref({
         { required: true, message: 'Please select seller type' },
     ],
     terms: [
-        { 
-            required: true, 
+        {
+            required: true,
             validator: (_rule: FormItemRule, value: boolean) => {
                 if (value === false) {
                     return new Error('Please accept terms and conditions');
                 }
                 return true;
             },
-            message: 'Please accept terms and conditions' },
+            message: 'Please accept terms and conditions'
+        },
     ],
 });
 
@@ -153,18 +155,28 @@ const registerUser = () => {
         <div class="container register-custom">
 
             <div class="row register-row mt-5 mb-5">
-                <div class="col-2">
-                    <div class="row custom-register-bg-top" :style="{borderRadius: '5px 0 0 0'}">
-
+                <div class="col-4">
+                    <div class="row">
                         <div class="col-12">
-                            <p class="text-center inverted-color mb-3 mt-3"><b>Login in!</b></p>
+                            <div class="outer-container">
+                                <div class="centered-container">
+                                    <p class="text-center big monsterrat">WELCOME BACK!</p>
+                                    <p class="text-center monsterrat small mb-0">To keep connected with Your offers</p>
+                                    <p class="text-center monsterrat small">please sign in</p>
+                                    <div class="text-center">
+                                        <n-button dashed focusable round strong type="primary">
+                                            SIGN IN
+                                        </n-button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>   
+                    </div>
                 </div>
-                <div class="col-10">
-                    <div class="row custom-register-bg-top" :style="{borderRadius: '0 5px 0 0'}">
+                <div class="col-8">
+                    <div class="row custom-register-bg-top" :style="{ borderRadius: '0 5px 0 0' }">
                         <div class="col-12">
-                            <p class="text-center inverted-color mb-3 mt-3"><b>REGISTER NEW ACCOUNT</b></p>
+                            <p class="text-center inverted-color mb-3 mt-3"><b>CREATE NEW ACCOUNT</b></p>
                         </div>
                     </div>
                     <n-form ref="formRef" size="medium" :rules="rules" :model="formValue">
@@ -250,11 +262,6 @@ const registerUser = () => {
 </template>
 
 <style scoped>
-.register-custom {
-    padding-left: 320px;
-    padding-right: 320px;
-}
-
 .small-row {
     padding-right: 200px;
     padding-left: 200px;
