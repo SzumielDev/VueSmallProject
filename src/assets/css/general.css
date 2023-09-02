@@ -27,12 +27,9 @@ body .custom-column {
     border: 1px solid #e5e5e5;
 }
 
-body .custom-register-bg-top {
-    background-color:rgb(31, 32, 34);
-}
-
 body .register-row {
     background-color: rgb(241, 241, 241);
+    border-radius: 10px;
 } 
 
 .bg-custom {
@@ -65,10 +62,6 @@ body.dark-theme .custom-column {
 
 body.dark-theme .register-row {
     background-color: rgb(31, 32, 32);
-} 
-
-body.dark-theme .custom-register-bg-top {
-    background-color:rgb(18, 20, 20);
 }
 
 /* Others */

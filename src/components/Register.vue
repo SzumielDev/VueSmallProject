@@ -156,27 +156,23 @@ const registerUser = () => {
 
             <div class="row register-row mt-5 mb-5">
                 <div class="col-4">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="outer-container">
-                                <div class="centered-container">
-                                    <p class="text-center big monsterrat">WELCOME BACK!</p>
-                                    <p class="text-center monsterrat small mb-0">To keep connected with Your offers</p>
-                                    <p class="text-center monsterrat small">please sign in</p>
-                                    <div class="text-center">
-                                        <n-button dashed focusable round strong type="primary">
-                                            SIGN IN
-                                        </n-button>
-                                    </div>
-                                </div>
+                    <div class="row h-100 gradient radius-left">
+                        <div class="col-12 text-center v-center">
+                            <p class="big monsterrat">WELCOME BACK!</p>
+                            <p class="monsterrat small mb-0">To keep connected with Your offers</p>
+                            <p class="monsterrat small">please sign in</p>
+                            <div class="text-center">
+                                <n-button dashed focusable round strong type="primary">
+                                    SIGN IN
+                                </n-button>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="col-8">
-                    <div class="row custom-register-bg-top" :style="{ borderRadius: '0 5px 0 0' }">
+                    <div class="row">
                         <div class="col-12">
-                            <p class="text-center inverted-color mb-3 mt-3"><b>CREATE NEW ACCOUNT</b></p>
+                            <p class="text-center inverted-color mb-3 mt-3 monsterrat big">CREATE NEW ACCOUNT</p>
                         </div>
                     </div>
                     <n-form ref="formRef" size="medium" :rules="rules" :model="formValue">
@@ -240,7 +236,7 @@ const registerUser = () => {
                         </div>
                         <div class="row pt-2">
                             <div class="col-12">
-                                <n-form-item class="disable-space" path="terms">
+                                <n-form-item class="disable-space v-center" path="terms">
                                     <n-checkbox v-model:checked="formValue.terms" name="terms" required>
                                         <p>I agree to the <a href="#">terms and conditions</a> <span
                                                 class="text-danger">*</span></p>
@@ -262,13 +258,43 @@ const registerUser = () => {
 </template>
 
 <style scoped>
+.register-custom {
+    padding-left: 300px;
+    padding-right: 300px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100vh - 100px);
+    max-height:100vh;
+}
+
+.v-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.gradient {
+    background: rgb(18, 26, 51);
+    background: linear-gradient(166deg, rgba(18, 26, 51, 1) 0%, rgba(49, 77, 156, 1) 50%, rgba(5, 26, 69, 1) 100%);
+}
+
 .small-row {
-    padding-right: 200px;
-    padding-left: 200px;
+    padding-right: 100px;
+    padding-left: 100px;
 }
 
 .disable-space {
     grid-template-rows: auto;
+}
+
+.radius-left {
+    border-radius: 10px 0px 0px 10px;
+}
+
+.radius-right {
+    border-radius: 0px 10px 10px 0px;
 }
 
 @media (max-width: 1399px) {
